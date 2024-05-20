@@ -23,13 +23,6 @@ reply = socket.recv_string()
 print(json.loads(reply))
 time.sleep(10)
 
-test_read = {'account': test_account, 'operation': 'read', 'data': ['Key 2']}
-request = json.dumps(test_read)
-socket.send_string(request)
-reply = socket.recv_string()
-print(json.loads(reply))
-time.sleep(10)
-
 test_update = {'account': test_account, 'operation': 'update', 'data': {'Key 2': 'Value 4'}}
 request = json.dumps(test_update)
 socket.send_string(request)

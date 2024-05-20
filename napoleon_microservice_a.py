@@ -14,7 +14,7 @@ socket.bind('tcp://localhost:13579')
 
 
 def create(account, data):
-    """Done!"""
+    """Creates a new account. Recieves a dictionary contai"""
     try:
         Path(f'Accounts/{account}').mkdir()
         for entry in data:
@@ -89,7 +89,7 @@ while True:
         if request == 'quit':
             reply = 'Ending Process.'
             break
-        elif type(request) is not dict:
+        elif type(request) is not dict or len(request) != 3:
             reply = 'Invalid Message Format'
         else:
             try:
