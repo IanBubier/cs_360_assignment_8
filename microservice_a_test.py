@@ -1,7 +1,6 @@
 import zmq
 import json
 import time
-from pathlib import Path
 
 context = zmq.Context()
 socket = context.socket(zmq.REQ)
@@ -14,6 +13,5 @@ test_create = {'account': test_account, 'operation': 'create', 'data': test_data
 request = json.dumps(test_create)
 socket.send_string(request)
 reply = socket.recv_string()
-reply = json.load(reply)
-print(json.load(reply))
+print(json.loads(reply))
 time.sleep(10)

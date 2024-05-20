@@ -93,10 +93,10 @@ while True:
             reply = 'Invalid Message Format'
         else:
             try:
-                account = message['account']
-                operation = message['operation']
-                data = message['data']
-                if type(account) is not str or type(operation) is not str or type(data) is not str:
+                account = request['account']
+                operation = request['operation']
+                data = request['data']
+                if type(account) is not str or type(operation) is not str or type(data) is not dict:
                     reply = 'Invalid Instruction Format'
                 elif operation == 'create':
                     reply = create(account, data)
