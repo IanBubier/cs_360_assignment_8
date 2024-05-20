@@ -1,8 +1,8 @@
 # Project: CS360 Assignment 8
-# Title: Napoleon's Microservice A
+# Title: Microservice A - Basic Account Management
 # Author: Ian Bubier
 # Date: 20/05/2024
-# Description: A rudimentary file management microservice supporting basic CRUD functionality.
+# Description: A rudimentary account management microservice supporting basic CRUD functionality.
 
 import json
 import zmq
