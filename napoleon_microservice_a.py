@@ -84,10 +84,10 @@ def delete(account, data=None):
 
 
 while True:
-    message = socket.recv_json()
+    message = socket.recv_string()
     try:
         request = json.loads(message)
-        if request == 'QUIT':
+        if request == 'quit':
             break
         elif type(request) is not dict:
             reply = 'Invalid Message Format'
@@ -98,13 +98,13 @@ while True:
                 data = message['data']
                 if type(account) is not str or type(operation) is not str or type(data) is not str:
                     reply = 'Invalid Instruction Format'
-                elif operation == 'CREATE':
+                elif operation == 'create':
                     reply = create(account, data)
-                elif operation == 'READ':
+                elif operation == 'read':
                     reply = read(account, data)
-                elif operation == 'UPDATE':
+                elif operation == 'update':
                     reply = update(account, data)
-                elif operation == 'DELETE':
+                elif operation == 'delete':
                     reply = delete(account, data)
                 else:
                     reply = 'Invalid Operation String'
@@ -112,6 +112,5 @@ while True:
                 reply = 'KeyError'
     except json.JSONDecodeError:
         reply = 'JSONDecodeError'
-    with open('reply.json', 'w') as response:
-        json.dump(reply, response)
-    socket.send_json(reply)
+    reply = json.dumps(reply)
+    socket.send_string(reply)
