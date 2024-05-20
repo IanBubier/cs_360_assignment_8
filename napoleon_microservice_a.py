@@ -14,7 +14,7 @@ socket.bind('tcp://localhost:13579')
 
 
 def create(account, data):
-    """TODO"""
+    """Done!"""
     try:
         Path(f'Accounts/{account}').mkdir()
         for entry in data:
@@ -28,14 +28,14 @@ def create(account, data):
     return reply
 
 
-def read(account, data=None):
+def read(account, data):
     """TODO"""
-    if data is None:
-        data = Path(f'Accounts/{account}').iterdir()
     try:
         read_data = {}
         for entry in data:
-            read_data[entry] = json.dumps(f'Accounts/{account}/{entry}.json')
+            with open(f'Accounts/{account}/{entry}.json', 'r') as read_entry:
+                entry_data = json.load(read_entry)
+                read_data[entry] = entry_data
         with open('reply.json', 'w') as reply:
             json.dump(read_data, reply)
     except FileNotFoundError:
@@ -48,11 +48,11 @@ def read(account, data=None):
 
 
 def update(account, data):
-    """TODO"""
+    """Done!"""
     try:
         for entry in data:
-            with open(f'Accounts/{account}/{entry}.json', 'w') as create_entry:
-                json.dump(data[entry], create_entry)
+            with open(f'Accounts/{account}/{entry}.json', 'w') as update_entry:
+                json.dump(data[entry], update_entry)
         with open('reply.json', 'w') as reply:
             json.dump(f'{account} updated.', reply)
     except FileNotFoundError:
@@ -65,15 +65,21 @@ def update(account, data):
 
 
 def delete(account, data=None):
-    """TODO"""
+    """Done!"""
+    rmdir = False
     if data is None:
         data = Path(f'Accounts/{account}').iterdir()
+        rmdir = True
     try:
         for entry in data:
-            Path(f'Accounts/{account}/{entry}.json').unlink()
-        Path(account).rmdir()
-        with open('reply.json', 'w') as reply:
-            json.dump(f'{account} deleted.', reply)
+            Path(entry).unlink()
+        if rmdir is True:
+            Path(f'Accounts/{account}').rmdir()
+            with open('reply.json', 'w') as reply:
+                json.dump(f'{account} deleted.', reply)
+        else:
+            with open('reply.json', 'w') as reply:
+                json.dump(f'{data} deleted for {account}.', reply)
     except FileNotFoundError:
         with open('reply.json', 'w') as reply:
             json.dump('FileNotFoundError', reply)
@@ -82,5 +88,4 @@ def delete(account, data=None):
             json.dump('PermissionError', reply)
 
 
-test_data = {'test_key': 'test_value'}
-create('test_account', test_data)
+account = 'test_account'
