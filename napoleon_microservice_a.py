@@ -20,10 +20,10 @@ def create(account, data):
         for entry in data:
             with open(f'Accounts/{account}/{entry}.json', 'w') as create_entry:
                 json.dump(data[entry], create_entry)
-        reply = f'{account} created.'
+        func_return = f'{account} created.'
     except FileExistsError:
-        reply = 'FileExistsError'
-    return reply
+        func_return = 'FileExistsError'
+    return func_return
 
 
 def read(account, data=None):
@@ -40,12 +40,12 @@ def read(account, data=None):
                 with open(f'Accounts/{account}/{entry}.json', 'r') as read_entry:
                     entry_data = json.load(read_entry)
                     read_data[entry] = entry_data
-        reply = read_data
+        func_return = read_data
     except FileNotFoundError:
-        reply = 'FileNotFoundError'
+        func_return = 'FileNotFoundError'
     except PermissionError:
-        reply = 'PermissionError'
-    return reply
+        func_return = 'PermissionError'
+    return func_return
 
 
 def update(account, data):
@@ -54,12 +54,12 @@ def update(account, data):
         for entry in data:
             with open(f'Accounts/{account}/{entry}.json', 'w') as update_entry:
                 json.dump(data[entry], update_entry)
-        reply = f'{account} updated.'
+        func_return = f'{account} updated.'
     except FileNotFoundError:
-        reply = 'FileNotFoundError'
+        func_return = 'FileNotFoundError'
     except PermissionError:
-        reply = 'PermissionError'
-    return reply
+        func_return = 'PermissionError'
+    return func_return
 
 
 def delete(account, data=None):
@@ -73,14 +73,45 @@ def delete(account, data=None):
             Path(entry).unlink()
         if rmdir is True:
             Path(f'Accounts/{account}').rmdir()
-            reply = f'{account} deleted.'
+            func_return = f'{account} deleted.'
         else:
-            reply = f'{data} deleted for {account}.'
+            func_return = f'{data} deleted for {account}.'
     except FileNotFoundError:
-        reply = 'FileNotFoundError'
+        func_return = 'FileNotFoundError'
     except PermissionError:
-        reply = 'PermissionError'
-    return reply
+        func_return = 'PermissionError'
+    return func_return
 
-#   with open('reply.json', 'w') as reply:
-#   json.dump(func_return, reply)
+
+while True:
+    message = socket.recv_json()
+    try:
+        request = json.loads(message)
+        if request == 'QUIT':
+            break
+        elif type(request) is not dict:
+            reply = 'Invalid Message Format'
+        else:
+            try:
+                account = message['account']
+                operation = message['operation']
+                data = message['data']
+                if type(account) is not str or type(operation) is not str or type(data) is not str:
+                    reply = 'Invalid Instruction Format'
+                elif operation == 'CREATE':
+                    reply = create(account, data)
+                elif operation == 'READ':
+                    reply = read(account, data)
+                elif operation == 'UPDATE':
+                    reply = update(account, data)
+                elif operation == 'DELETE':
+                    reply = delete(account, data)
+                else:
+                    reply = 'Invalid Operation String'
+            except KeyError:
+                reply = 'KeyError'
+    except json.JSONDecodeError:
+        reply = 'JSONDecodeError'
+    with open('reply.json', 'w') as response:
+        json.dump(reply, response)
+    socket.send_json(reply)
