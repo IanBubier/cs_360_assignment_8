@@ -16,9 +16,9 @@ socket.bind('tcp://localhost:13579')
 def create(account, data):
     """TODO"""
     try:
-        Path(account).mkdir()
+        Path(f'Accounts/{account}').mkdir()
         for entry in data:
-            with open(f'{account}/{entry}.json', 'w') as create_entry:
+            with open(f'Accounts/{account}/{entry}.json', 'w') as create_entry:
                 json.dump(data[entry], create_entry)
         with open('reply.json', 'w') as reply:
             json.dump(f'{account} created.', reply)
@@ -31,11 +31,11 @@ def create(account, data):
 def read(account, data=None):
     """TODO"""
     if data is None:
-        data = Path(account).iterdir()
+        data = Path(f'Accounts/{account}').iterdir()
     try:
         read_data = {}
         for entry in data:
-            read_data[entry] = json.dumps(f'{account}/{entry}.json')
+            read_data[entry] = json.dumps(f'Accounts/{account}/{entry}.json')
         with open('reply.json', 'w') as reply:
             json.dump(read_data, reply)
     except FileNotFoundError:
@@ -51,7 +51,7 @@ def update(account, data):
     """TODO"""
     try:
         for entry in data:
-            with open(f'{account}/{entry}.json', 'w') as create_entry:
+            with open(f'Accounts/{account}/{entry}.json', 'w') as create_entry:
                 json.dump(data[entry], create_entry)
         with open('reply.json', 'w') as reply:
             json.dump(f'{account} updated.', reply)
@@ -67,10 +67,10 @@ def update(account, data):
 def delete(account, data=None):
     """TODO"""
     if data is None:
-        data = Path(account).iterdir()
+        data = Path(f'Accounts/{account}').iterdir()
     try:
         for entry in data:
-            Path(f'{account}/{entry}.json').unlink()
+            Path(f'Accounts/{account}/{entry}.json').unlink()
         Path(account).rmdir()
         with open('reply.json', 'w') as reply:
             json.dump(f'{account} deleted.', reply)
@@ -80,3 +80,7 @@ def delete(account, data=None):
     except PermissionError:
         with open('reply.json', 'w') as reply:
             json.dump('PermissionError', reply)
+
+
+test_data = {'test_key': 'test_value'}
+create('test_account', test_data)
