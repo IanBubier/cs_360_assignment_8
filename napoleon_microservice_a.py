@@ -96,18 +96,24 @@ while True:
                 account = request['account']
                 operation = request['operation']
                 data = request['data']
-                if type(account) is not str or type(operation) is not str or type(data) is not dict:
-                    reply = 'Invalid Instruction Format'
-                elif operation == 'create':
-                    reply = create(account, data)
-                elif operation == 'read':
-                    reply = read(account, data)
-                elif operation == 'update':
-                    reply = update(account, data)
-                elif operation == 'delete':
-                    reply = delete(account, data)
+                if type(account) is not str:
+                    reply = 'Invalid Account Format'
+                elif type(operation) is not str:
+                    reply = 'Invalid Operation Format'
                 else:
-                    reply = 'Invalid Operation String'
+                    valid_ops = ['create', 'read', 'update', 'delete']
+                    if operation not in valid_ops:
+                        reply = "Invalid Operation String"
+                    elif operation == 'create' and type(data) is dict:
+                        reply = create(account, data)
+                    elif operation == 'read' and type(data) is list:
+                        reply = read(account, data)
+                    elif operation == 'update' and type(data) is dict:
+                        reply = update(account, data)
+                    elif operation == 'delete' and type(data) is list:
+                        reply = delete(account, data)
+                    else:
+                        reply = 'Invalid Data Format'
             except KeyError:
                 reply = 'KeyError'
     except json.JSONDecodeError:
