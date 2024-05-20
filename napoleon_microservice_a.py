@@ -33,10 +33,10 @@ def read(account, data=None):
     try:
         read_data = {}
         if data is None:
-            for entry in Path(f'Account/{account}').iterdir():
+            for entry in Path(f'Accounts/{account}').iterdir():
                 with open(entry, 'r') as read_entry:
                     entry_data = json.load(read_entry)
-                    read_data[entry] = entry_data
+                    read_data[f'{entry.stem}'] = entry_data
         else:
             for entry in data:
                 with open(f'Accounts/{account}/{entry}.json', 'r') as read_entry:
@@ -94,8 +94,3 @@ def delete(account, data=None):
             json.dump('PermissionError', reply)
 
 
-test_account = 'account'
-test_data = {'key1': 'value1', 'key2': 'value2'}
-create(test_account, test_data)
-delete(test_account)
-delete('test_account')
