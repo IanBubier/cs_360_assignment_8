@@ -1,8 +1,8 @@
-# Project: CS360 Group Project
-# Title: Napoleon Microservice A
+# Project: CS360 Assignment 8
+# Title: Napoleon's Microservice A
 # Author: Ian Bubier
 # Date: 20/05/2024
-# Description: TODO
+# Description: A rudimentary file management microservice supporting basic CRUD functionality.
 
 import json
 import zmq
@@ -14,7 +14,12 @@ socket.bind('tcp://localhost:13579')
 
 
 def create(account, data):
-    """Creates a new account. Recieves a dictionary contai"""
+    """
+    Creates an account.
+    :param account: any
+    :param data: {'account': string, 'data': dictionary}
+    :return: Success or common error string.
+    """
     try:
         Path(f'Accounts/{account}').mkdir()
         for entry in data:
@@ -27,7 +32,12 @@ def create(account, data):
 
 
 def read(account, data=None):
-    """Done!"""
+    """
+    Reads specified data from an account, or all data if data is None.
+    :param account: any
+    :param data: {'account': string, 'data': list or None}
+    :return: Requested data dictionary or common error strings.
+    """
     try:
         read_data = {}
         if data is None:
@@ -49,7 +59,12 @@ def read(account, data=None):
 
 
 def update(account, data):
-    """Done!"""
+    """
+    Updates an account.
+    :param account: any
+    :param data: {'account': string, 'data': dictionary}
+    :return: Success or common error strings.
+    """
     try:
         for entry in data:
             with open(f'Accounts/{account}/{entry}.json', 'w') as update_entry:
@@ -63,7 +78,12 @@ def update(account, data):
 
 
 def delete(account, data=None):
-    """Done"""
+    """
+    Deletes specified data from an account, or deletes account and account data if data is None.
+    :param account: any
+    :param data: {'account': string, 'data': list or None}
+    :return: Success or common error strings.
+    """
     try:
         if data is None:
             data = Path(f'Accounts/{account}').iterdir()
