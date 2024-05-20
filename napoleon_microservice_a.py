@@ -2,7 +2,7 @@
 # Title: Napoleon Microservice A
 # Author: Ian Bubier
 # Date: 18/05/2024
-# Description:
+# Description: TODO
 
 import json
 import zmq
@@ -14,61 +14,69 @@ socket.bind('tcp://localhost:13579')
 
 
 def create(account, data):
-    """DONE"""
+    """TODO"""
     try:
         Path(account).mkdir()
         for entry in data:
-            Path(f'{account}/{entry}.json').write_text(json.dumps(data[entry]))
-        Path('reply.json').write_text(json.dumps(f'{account} created.'))
+            with open(f'{account}/{entry}.json', 'w') as create_entry:
+                json.dump(data[entry], create_entry)
+        with open('reply.json', 'w') as reply:
+            json.dump(f'{account} created.', reply)
     except FileExistsError:
-        with open('reply.json', 'w') as response:
-            json.dump('FileExistsError', response)
-    return response
+        with open('reply.json', 'w') as reply:
+            json.dump('FileExistsError', reply)
+    return reply
 
 
 def read(account, data=None):
-    """"""
+    """TODO"""
     if data is None:
         data = Path(account).iterdir()
     try:
+        read_data = {}
         for entry in data:
-            pass
-        Path('reply.json').write_text(json.dumps(''))
+            read_data[entry] = json.dumps(f'{account}/{entry}.json')
+        with open('reply.json', 'w') as reply:
+            json.dump(read_data, reply)
     except FileNotFoundError:
-        with open('reply.json', 'w') as response:
-            json.dump('FileNotFoundError', response)
+        with open('reply.json', 'w') as reply:
+            json.dump('FileNotFoundError', reply)
     except PermissionError:
-        with open('reply.json', 'w') as response:
-            json.dump('PermissionError', response)
+        with open('reply.json', 'w') as reply:
+            json.dump('PermissionError', reply)
+    return reply
 
 
 def update(account, data):
-    """DONE"""
+    """TODO"""
     try:
         for entry in data:
-            Path(f'{account}/{entry}.json').write_text(json.dumps(data[entry]))
-        Path('reply.json').write_text(json.dumps(f'{account} updated.'))
+            with open(f'{account}/{entry}.json', 'w') as create_entry:
+                json.dump(data[entry], create_entry)
+        with open('reply.json', 'w') as reply:
+            json.dump(f'{account} updated.', reply)
     except FileNotFoundError:
-        with open('reply.json', 'w') as response:
-            json.dump('FileNotFoundError', response)
+        with open('reply.json', 'w') as reply:
+            json.dump('FileNotFoundError', reply)
     except PermissionError:
-        with open('reply.json', 'w') as response:
-            json.dump('PermissionError', response)
-    return response
+        with open('reply.json', 'w') as reply:
+            json.dump('PermissionError', reply)
+    return reply
 
 
 def delete(account, data=None):
-    """"""
+    """TODO"""
     if data is None:
         data = Path(account).iterdir()
     try:
         for entry in data:
             Path(f'{account}/{entry}.json').unlink()
         Path(account).rmdir()
-        Path('reply.json').write_text(json.dumps(f'{account} deleted.'))
+        with open('reply.json', 'w') as reply:
+            json.dump(f'{account} deleted.', reply)
     except FileNotFoundError:
-        with open('reply.json', 'w') as response:
-            json.dump('FileNotFoundError', response)
+        with open('reply.json', 'w') as reply:
+            json.dump('FileNotFoundError', reply)
     except PermissionError:
-        with open('reply.json', 'w') as response:
-            json.dump('PermissionError', response)
+        with open('reply.json', 'w') as reply:
+            json.dump('PermissionError', reply)
