@@ -1,7 +1,7 @@
 # Project: CS360 Group Project
 # Title: Napoleon Microservice A
 # Author: Ian Bubier
-# Date: 18/05/2024
+# Date: 20/05/2024
 # Description: TODO
 
 import json
@@ -20,11 +20,9 @@ def create(account, data):
         for entry in data:
             with open(f'Accounts/{account}/{entry}.json', 'w') as create_entry:
                 json.dump(data[entry], create_entry)
-        with open('reply.json', 'w') as reply:
-            json.dump(f'{account} created.', reply)
+        reply = f'{account} created.'
     except FileExistsError:
-        with open('reply.json', 'w') as reply:
-            json.dump('FileExistsError', reply)
+        reply = 'FileExistsError'
     return reply
 
 
@@ -42,14 +40,11 @@ def read(account, data=None):
                 with open(f'Accounts/{account}/{entry}.json', 'r') as read_entry:
                     entry_data = json.load(read_entry)
                     read_data[entry] = entry_data
-        with open('reply.json', 'w') as reply:
-            json.dump(read_data, reply)
+        reply = read_data
     except FileNotFoundError:
-        with open('reply.json', 'w') as reply:
-            json.dump('FileNotFoundError', reply)
+        reply = 'FileNotFoundError'
     except PermissionError:
-        with open('reply.json', 'w') as reply:
-            json.dump('PermissionError', reply)
+        reply = 'PermissionError'
     return reply
 
 
@@ -59,14 +54,11 @@ def update(account, data):
         for entry in data:
             with open(f'Accounts/{account}/{entry}.json', 'w') as update_entry:
                 json.dump(data[entry], update_entry)
-        with open('reply.json', 'w') as reply:
-            json.dump(f'{account} updated.', reply)
+        reply = f'{account} updated.'
     except FileNotFoundError:
-        with open('reply.json', 'w') as reply:
-            json.dump('FileNotFoundError', reply)
+        reply = 'FileNotFoundError'
     except PermissionError:
-        with open('reply.json', 'w') as reply:
-            json.dump('PermissionError', reply)
+        reply = 'PermissionError'
     return reply
 
 
@@ -81,16 +73,14 @@ def delete(account, data=None):
             Path(entry).unlink()
         if rmdir is True:
             Path(f'Accounts/{account}').rmdir()
-            with open('reply.json', 'w') as reply:
-                json.dump(f'{account} deleted.', reply)
+            reply = f'{account} deleted.'
         else:
-            with open('reply.json', 'w') as reply:
-                json.dump(f'{data} deleted for {account}.', reply)
+            reply = f'{data} deleted for {account}.'
     except FileNotFoundError:
-        with open('reply.json', 'w') as reply:
-            json.dump('FileNotFoundError', reply)
+        reply = 'FileNotFoundError'
     except PermissionError:
-        with open('reply.json', 'w') as reply:
-            json.dump('PermissionError', reply)
+        reply = 'PermissionError'
+    return reply
 
-
+#   with open('reply.json', 'w') as reply:
+#   json.dump(func_return, reply)
