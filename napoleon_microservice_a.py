@@ -64,17 +64,16 @@ def update(account, data):
 
 def delete(account, data=None):
     """Done"""
-    rmdir = False
-    if data is None:
-        data = Path(f'Accounts/{account}').iterdir()
-        rmdir = True
     try:
-        for entry in data:
-            Path(entry).unlink()
-        if rmdir is True:
+        if data is None:
+            data = Path(f'Accounts/{account}').iterdir()
+            for entry in data:
+                Path(entry).unlink()
             Path(f'Accounts/{account}').rmdir()
             func_return = f'{account} deleted.'
         else:
+            for entry in data:
+                Path(f'Accounts/{account}/{entry}.json').unlink()
             func_return = f'{data} deleted for {account}.'
     except FileNotFoundError:
         func_return = 'FileNotFoundError'
@@ -88,6 +87,7 @@ while True:
     try:
         request = json.loads(message)
         if request == 'quit':
+            reply = 'Ending Process.'
             break
         elif type(request) is not dict:
             reply = 'Invalid Message Format'
@@ -106,11 +106,11 @@ while True:
                         reply = "Invalid Operation String"
                     elif operation == 'create' and type(data) is dict:
                         reply = create(account, data)
-                    elif operation == 'read' and type(data) is list:
+                    elif operation == 'read' and (type(data) is list or data is None):
                         reply = read(account, data)
                     elif operation == 'update' and type(data) is dict:
                         reply = update(account, data)
-                    elif operation == 'delete' and type(data) is list:
+                    elif operation == 'delete' and (type(data) is list or data is None):
                         reply = delete(account, data)
                     else:
                         reply = 'Invalid Data Format'

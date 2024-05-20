@@ -44,7 +44,7 @@ reply = socket.recv_string()
 print(json.loads(reply))
 time.sleep(10)
 
-test_delete = test_read = {'account': test_account, 'operation': 'delete', 'data': ['Key 1']}
+test_delete = {'account': test_account, 'operation': 'delete', 'data': ['Key 1']}
 request = json.dumps(test_delete)
 socket.send_string(request)
 reply = socket.recv_string()
@@ -58,9 +58,15 @@ reply = socket.recv_string()
 print(json.loads(reply))
 time.sleep(10)
 
-test_delete = test_read = {'account': test_account, 'operation': 'delete', 'data': None}
+test_delete = {'account': test_account, 'operation': 'delete', 'data': None}
 request = json.dumps(test_delete)
 socket.send_string(request)
 reply = socket.recv_string()
 print(json.loads(reply))
 time.sleep(10)
+
+test_quit = 'quit'
+request = json.dumps(test_quit)
+socket.send_string(request)
+reply = socket.recv_string()
+print(json.loads(reply))
