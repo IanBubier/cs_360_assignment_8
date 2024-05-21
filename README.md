@@ -4,6 +4,5 @@ The program will accept requests via JSON files sent through the assigned ZeroMQ
 
 The program will reply to requests via JSON files sent through the assigned ZeroMQ pipe. For 'create', 'read', or 'delete' operations, the reply will be a string containing a confirmation of success, a string containing the name of a likely error, or nothing if some other error occurred. For 'update' operations, the reply will be a dictionary containing the requested information, a string containing the name of a likely error, or nothing if some other error occurred.
 
-
-
+<br>
 ![basic_UML](https://github.com/IanBubier/cs_360_assignment_8/assets/137921511/35ad18bf-35a9-4639-865e-150f9e0a733a)
