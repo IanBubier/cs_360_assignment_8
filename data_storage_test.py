@@ -25,7 +25,7 @@ socket.send_string(request)
 reply = socket.recv_string()
 print('\nTest program requests account data and microservice replies with all account data.')
 print(json.loads(reply))
-
+time.sleep(10)
 
 test_update = {'account': test_account, 'operation': 'update', 'data': {'Key 2': 'Value 4'}}
 request = json.dumps(test_update)
