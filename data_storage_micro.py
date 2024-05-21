@@ -108,6 +108,8 @@ while True:
         request = json.loads(message)
         if request == 'quit':
             reply = 'Ending Process.'
+            reply = json.dumps(reply)
+            socket.send_string(reply)
             break
         elif type(request) is not dict or len(request) != 3:
             reply = 'Invalid Message Format'
